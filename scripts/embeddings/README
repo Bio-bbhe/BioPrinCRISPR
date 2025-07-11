@@ -1,0 +1,135 @@
+# Protein Sequence Embedding Extraction and K-Means Clustering Analysis
+
+## Project Overview
+
+This repository provides two Python scripts for comprehensive protein sequence analysis via embedding extraction and clustering:
+
+1. **Embedding Extraction:**  
+   `1_1_get_embedding.py` utilises a pre-trained **ESM-2** model (trained on UniRef50) to encode protein sequences from FASTA files into vector embeddings. These embeddings capture meaningful biological signals by representing protein sequences in a high-dimensional numerical space.
+
+2. **Clustering Analysis:**  
+   `6_clustering_K-Means_OneStep.py` performs K-Means clustering on these embeddings to discover intrinsic groupings in protein datasets. It also supports cluster number optimization via metrics such as inertia and silhouette score, supported by visualizations including UMAP projections.
+
+---
+
+## File Descriptions
+
+- **1_1_get_embedding.py**  
+  Generates embeddings from protein sequences loaded from a directory of FASTA files, using a pre-trained ESM-2 model. Outputs one CSV file per input FASTA, with rows as sequences and columns as embedding dimensions.
+
+- **6_clustering_K-Means_OneStep.py**  
+  Accepts query and reference protein embeddings in CSV format, concatenates them, and performs K-Means clustering with user-specified cluster number `k`. Includes optional k optimization and UMAP-based visualization of clusters, highlighting specified sequences.
+
+---
+
+## Dependencies
+
+- Python 3.x  
+- torch (PyTorch)  
+- transformers  
+- esm (as needed for ESM-2 model loading)  
+- numpy  
+- pandas  
+- scikit-learn  
+- biopython  
+- umap-learn  
+- matplotlib  
+- seaborn  
+- adjustText  
+
+Install the main dependencies via:
+
+pip install torch transformers numpy pandas scikit-learn biopython umap-learn matplotlib seaborn adjustText
+
+Additional setup for the pre-trained ESM-2 model directory is required.
+
+---
+
+## Usage Instructions
+
+### Step 1: Embedding Extraction (`1_1_get_embedding.py`)
+
+Extract protein sequence embeddings using the pretrained ESM-2 model.
+
+#### Arguments:
+
+- `-m`, `--model_path` (str, required): Path to the pretrained ESM-2 model directory.  
+- `-q`, `--faa_query_dirs` (str, required): Path to the directory containing input FASTA files.  
+- `-e`, `--emb_path` (str, required): Path to output directory where CSV embedding files will be saved. The directory will be created if not present.
+
+#### Functionality Highlights:
+
+- Loads each FASTA file from the input directory.  
+- Converts each protein sequence to uppercase and tokenizes using the ESM tokenizer.  
+- Processes sequences in batches (default batch size 32) for GPU memory efficiency.  
+- Obtains sequence embeddings by averaging the last hidden state embeddings across all amino acid positions.  
+- Writes embedding vectors per sequence to CSV files with `Sequence_ID` columns and embedding features (`Embedding_0`, `Embedding_1`, ...) as subsequent columns.  
+- Utilizes GPU if available with memory management via cache clearing during inference.
+
+#### Example command:
+
+python 1_1_get_embedding.py -m /path/to/esm2_model -q /path/to/fasta_directory -e /path/to/output_embeddings_dir
+
+---
+
+### Step 2: K-Means Clustering and Visualization (`6_clustering_K-Means_OneStep.py`)
+
+Run K-Means clustering on combined query and reference embeddings and visualize results.
+
+#### Arguments:
+
+- `-q`, `--embedding_csv_query` (str): Path to the query embedding CSV file (default paths are hardcoded but can be overridden).  
+- `-r`, `--embedding_csv_ref` (str): Path to the reference embedding CSV file.  
+- `-o`, `--output_dir` (str, required): Directory to save clustering outputs and plots. Created if it does not exist.  
+- `-c`, `--n_clusters` (int, required): Number of clusters (k) to use in K-Means clustering.
+
+#### Functionality Highlights:
+
+- Loads query and reference embeddings, concatenates them, and ensures unique sequence IDs.  
+- Performs optional k optimization (not activated by default) with inertia and silhouette scores and produces a plot for selecting optimal cluster numbers.  
+- Normalizes embeddings with L2 norm before clustering.  
+- Runs K-Means clustering with user-specified cluster number and outputs cluster assignments (`Sequence_ID` and `Cluster_ID`) as a TSV file.  
+- Reports cluster sizes and silhouette score for quality assessment.  
+- Generates a 2D UMAP projection scatter plot where clusters are colored distinctly. Certain sequences (IDs starting with 'Cas13an', or specific IDs like 'MEQ1724827.1') are highlighted with larger markers and text labels.  
+- Saves the UMAP plot into the output directory.
+
+#### Example command:
+
+python 6_clustering_K-Means_OneStep.py -q /path/to/query_emb.csv -r /path/to/ref_emb.csv -o ./cluster_results -c 5
+
+---
+
+## Example Full Workflow
+
+Assuming you have:
+
+- Pretrained ESM-2 model directory at `/models/esm2_t33_650M_UR50D`  
+- Input FASTA files at `/data/protein_fastas/`  
+- Output embeddings directory `/results/embeddings/`  
+- Output clustering results directory `/results/clustering/`
+
+The workflow is:
+
+1. Extract embeddings:
+
+python 1_1_get_embedding.py -m /models/esm2_t33_650M_UR50D -q /data/protein_fastas/ -e /results/embeddings/
+
+2. Choose or prepare query and reference embedding CSV files from generated outputs.
+
+3. Perform clustering:
+
+python 6_clustering_K-Means_OneStep.py \
+  -q /results/embeddings/query_embeddings.csv \
+  -r /results/embeddings/ref_embeddings.csv \
+  -o /results/clustering/ \
+  -c 5
+
+---
+
+## Notes
+
+- The embedding extraction script saves one CSV per FASTA file; these may need to be merged or selected appropriately before running clustering.  
+- The clustering script expects embedding CSVs with sequences as rows indexed by `Sequence_ID` and embedding dimensions as tab-separated columns.  
+- UMAP visualization helps explore cluster structure in 2D; sequences of particular interest are visually highlighted.  
+- GPU acceleration is supported for embedding extraction and distance computations if CUDA-enabled devices are present.  
+- Proper management of directory paths and file formats is critical for seamless pipeline execution.
