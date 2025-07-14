@@ -98,6 +98,32 @@ Run K-Means clustering on combined query and reference embeddings and visualize 
 python 6_clustering_K-Means_OneStep.py -q /path/to/query_emb.csv -r /path/to/ref_emb.csv -o ./cluster_results -c 5
 
 ---
+## Example Full Workflow
+
+Assuming you have:
+
+- Pretrained ESM-2 model directory at `/models/esm2_t33_650M_UR50D`  
+- Input FASTA files at `/data/protein_fastas/`  
+- Output embeddings directory `/results/embeddings/`  
+- Output clustering results directory `/results/clustering/`
+
+The workflow is:
+
+1. Extract embeddings:
+
+python 1_1_get_embedding.py -m /models/esm2_t33_650M_UR50D -q /data/protein_fastas/ -e /results/embeddings/
+
+2. Choose or prepare query and reference embedding CSV files from generated outputs.
+
+3. Perform clustering:
+
+python 6_clustering_K-Means_OneStep.py \
+  -q /results/embeddings/query_embeddings.csv \
+  -r /results/embeddings/ref_embeddings.csv \
+  -o /results/clustering/ \
+  -c 5
+
+---
 
 ## Additional Visualization Script: UMAP Projection with Highlighted Sequence Types
 
@@ -134,39 +160,8 @@ This visualization enhances the interpretability of clustering outcomes by enabl
 
 ### Usage Example
 
-Assuming the UMAP and clustering results are saved in `umap_embeddings_with_clusters.csv`, the script can be executed as follows:
-
-```bash
-python 7_visualize_umap_highlight.py --input umap_embeddings_with_clusters.csv
-
 It is recommended to run the `7_visualize_umap_highlight.py` script within a Jupyter Notebook or other interactive Python environment. This facilitates iterative exploration and visualization adjustment while enabling immediate display of high-resolution plots. Jupyter’s interactive capabilities allow for easier customization of figure parameters and real-time inspection of highlighted clusters, enhancing data interpretability.
 
-## Example Full Workflow
-
-Assuming you have:
-
-- Pretrained ESM-2 model directory at `/models/esm2_t33_650M_UR50D`  
-- Input FASTA files at `/data/protein_fastas/`  
-- Output embeddings directory `/results/embeddings/`  
-- Output clustering results directory `/results/clustering/`
-
-The workflow is:
-
-1. Extract embeddings:
-
-python 1_1_get_embedding.py -m /models/esm2_t33_650M_UR50D -q /data/protein_fastas/ -e /results/embeddings/
-
-2. Choose or prepare query and reference embedding CSV files from generated outputs.
-
-3. Perform clustering:
-
-python 6_clustering_K-Means_OneStep.py \
-  -q /results/embeddings/query_embeddings.csv \
-  -r /results/embeddings/ref_embeddings.csv \
-  -o /results/clustering/ \
-  -c 5
-
----
 
 ## Notes
 
