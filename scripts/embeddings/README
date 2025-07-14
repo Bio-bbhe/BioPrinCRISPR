@@ -99,6 +99,48 @@ python 6_clustering_K-Means_OneStep.py -q /path/to/query_emb.csv -r /path/to/ref
 
 ---
 
+## Additional Visualization Script: UMAP Projection with Highlighted Sequence Types
+
+### Script: `7_visualize_umap_highlight.py`
+
+This script provides a detailed visualization of UMAP embeddings combined with K-Means clustering labels to facilitate the interpretation of protein sequence clustering results. It takes as input a tab-separated CSV file containing UMAP coordinates and cluster assignments for each sequence (`Sequence_ID`, `UMAP_X`, `UMAP_Y`, and `Cluster_ID` columns).
+
+Key features include:
+
+- Scatterplot of all sequences colored by cluster membership with differentiated marker styles;
+- Highlighting of specific sequence subsets based on sequence identifiers:
+  - Sequences with IDs starting with `"Cas13an"` are emphasized with larger markers and distinct black edges, labeled as “Known Cas13an”;
+  - Sequences beginning with `"MEK"` or `"MEQ"` are highlighted by red-edged larger markers, annotated as “PbCas13an\nSpCas13an”;
+  - Remaining sequences are rendered with smaller, semi-transparent markers to maintain visual context;
+- An inset zoomed-in subplot focusing on the region containing highlighted sequences for detailed inspection;
+- Customizable aesthetics preserving high visual clarity suitable for publication-quality figures.
+
+This visualization enhances the interpretability of clustering outcomes by enabling immediate spatial recognition of biologically relevant subgroups within the embedding space.
+
+### Input Requirements
+
+- The input file must be a tab-separated CSV containing at minimum the following columns:
+
+  - `Sequence_ID`: Unique sequence identifiers corresponding to the embeddings;
+  - `UMAP_X`, `UMAP_Y`: Two-dimensional UMAP embedding coordinates;
+  - `Cluster_ID`: Discrete cluster labels assigned by K-Means.
+
+### Dependencies
+
+- pandas  
+- seaborn  
+- matplotlib  
+- mpl_toolkits.axes_grid1
+
+### Usage Example
+
+Assuming the UMAP and clustering results are saved in `umap_embeddings_with_clusters.csv`, the script can be executed as follows:
+
+```bash
+python 7_visualize_umap_highlight.py --input umap_embeddings_with_clusters.csv
+
+It is recommended to run the `7_visualize_umap_highlight.py` script within a Jupyter Notebook or other interactive Python environment. This facilitates iterative exploration and visualization adjustment while enabling immediate display of high-resolution plots. Jupyter’s interactive capabilities allow for easier customization of figure parameters and real-time inspection of highlighted clusters, enhancing data interpretability.
+
 ## Example Full Workflow
 
 Assuming you have:
