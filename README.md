@@ -10,19 +10,42 @@ BioPrinCRISPR is a class-agnostic computational framework that integrates gene c
 
 ```
 bioprincrispr/
-├── README.md                # This file
-├── LICENSE                  # MIT License
-├── environment.yml          # Conda environment for reproducibility
-├── config.yaml              # Central configuration file
-│
-├── data/                      # Data directory
-│   ├── raw/example_genomes/   # Example input genomes for testing
-│   └── reference/             # Scripts to download reference databases
-│
-├── notebooks/                 # Jupyter notebooks for exploration
-├── results/                   # Final figures and tables from the analysis
-├── scripts/                   # Main executable scripts for running the pipeline
-└── src/                       # Source code for the bioprincrispr Python module
+├── LICENSE
+├── README.md
+├── config.yaml
+├── data
+│   └── reference
+│       └── download_pfam.sh
+├── environment.yml
+├── notebooks
+│   └── exploratory_analysis.ipynb
+├── scripts
+│   ├── 01_array.py
+│   ├── 02_ap_pairs_v2.py
+│   ├── 03_pairs_to_fasta.py
+│   ├── 04_co-conservation_v4.py
+│   ├── 05_domain_co-occurrence.py
+│   ├── 05_domain_co-occurrence_3.py
+│   ├── 05_domain_co-occurrence_undirected.py
+│   ├── 06_rna_ss_vis.py
+│   ├── 10_ArrowerSVG.py
+│   ├── 10_ArrowerSVG_to_pdf.py
+│   ├── 15_rank_combinations.py
+│   ├── NetworkAnalysis.ipynb
+│   ├── analysis
+│   │   ├── plot_figure1.py
+│   │   └── plot_figure5.py
+│   └── embeddings
+│       ├── README
+│       ├── clustering_K-Means_OneStep.py
+│       ├── draw_UMAP.py
+│       └── get_embedding.py
+└── src
+    └── bioprincrispr
+        ├── __init__.py
+        ├── conservation.py
+        ├── discovery.py
+        └── utils.py
 ```
 
 ## Installation
