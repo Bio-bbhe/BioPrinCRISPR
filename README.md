@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This repository contains the source code and analysis pipeline for the manuscript: **"Systematic discovery across one million genomes reveals vast architectural and functional diversity of CRISPR-Cas systems"**.
+This repository contains the source code and analysis pipeline for the manuscript: **"A deep learning and co-conservation framework enable discovery of non-canonical Cas proteins"**.
 
 BioPrinCRISPR is a class-agnostic computational framework that integrates gene co-conservation, protein domain co-occurrence, and semantic embedding similarity to systematically identify and characterize novel CRISPR-Cas systems from prokaryotic genomes.
 
@@ -40,12 +40,7 @@ bioprincrispr/
 │       ├── clustering_K-Means_OneStep.py
 │       ├── draw_UMAP.py
 │       └── get_embedding.py
-└── src
-    └── bioprincrispr
-        ├── __init__.py
-        ├── conservation.py
-        ├── discovery.py
-        └── utils.py
+
 ```
 
 ## Installation
@@ -57,10 +52,10 @@ bioprincrispr/
     ```
 
 2.  **Create the Conda environment:**
-    All dependencies are managed using Conda. Create and activate the environment using the provided file.
+     Create and activate the environment using the provided file.
     ```bash
     conda env create -f environment.yml
-    conda activate bioprincrispr
+    conda activate crispr
     ```
 
 3.  **Download Reference Databases:**
