@@ -268,7 +268,7 @@ python scripts/06_rna_ss_vis_args.py \
   -o ./results/
 ```
 
-### Step 10: Gene Cluster Visualization using `10_ArrowerSVG.py`
+### Step 7: Gene Cluster Visualization using `10_ArrowerSVG.py`
 
 **Description:**
 Generates SVG visualizations of gene clusters from GenBank files, drawing arrows representing genes with strand orientation and coloring by Pfam domains. Annotates labels, repeat regions, and supports connecting conserved genes.
@@ -282,7 +282,7 @@ This script does not accept command-line parameters. Input directory, output pat
 python scripts/10_ArrowerSVG.py
 ```
 
-### Step 15: Ranking Protein Domain Combinations using `15_rank_combinations.py`
+### Step 8: Ranking Protein Domain Combinations using `15_rank_combinations.py`
 
 **Description:**
 Extracts domain-domain combinations from a GraphML protein domain network, annotates Pfam pairs with descriptions, ranks them by protein count, and outputs a CSV summary.
@@ -316,4 +316,5 @@ If you use BioPrinCRISPR or any findings from our study, please cite our manuscr
   pages={YY-ZZ}
 }
 ```
+
 
