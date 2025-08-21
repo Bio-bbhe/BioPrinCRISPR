@@ -93,6 +93,27 @@ python scripts/01_array.py \
   -sMax 80 \
   -n 16 \
   -o /data/output/
+  
+  example usage:
+    python 01_array.py -i fna_path.txt -rN 3 -rMin 11 -rMax 80 -sMin 11 -sMax 80 -n 16 -o /out
+```
+
+**Output:**
+* `outdir/repat_info` stores repeat info, and 
+* `minced_out2fna.tsv` stores path info:
+    
+```bash
+   outdir/
+     ├── minced_out2fna.tsv
+     ├── repeat_info/
+     │   ├── fna_01.fa_minced_out.txt
+     │   ├── fna_02.fa_minced_out.txt
+     │   └── fna_03.fa_minced_out.txt
+
+    minced_out2fna.tsv:
+    fna_path       file_path
+    /dada/user/David/fna_01.fa  outdir/repeat_info/fna_01.fa_minced_out.txt
+    /dada/user/David/fna_02.fa  outdir/repeat_info/fna_02.fa_minced_out.txt
 ```
 
 ### Step 2: Generate Array-Protein Pairs using `02_ap_pairs_v2.py`
@@ -115,6 +136,16 @@ python scripts/02_ap_pairs_v2.py \
   -w 10000 \
   -n 16 \
   -o /data/output/
+```
+**Output:**
+* `prodigal_faa/`
+* `single_csv_and_faa/`
+* `array2prot_pairs.csv`
+```bash
+  outdir/
+ ├── array2prot_pairs.csv
+ ├── prodigal_faa/
+ ├── single_csv_and_faa
 ```
 
 ### Step 3: Extract and Deduplicate Array and Protein FASTA Sequences using `03_pairs_to_fasta.py`
@@ -145,12 +176,39 @@ python scripts/03_pairs_to_fasta.py \
   -orf_num 5 \
   -o /data/output/
 ```
+**Output**: 
+* Filtered and deduplicated (on array) array and protein fasta:
+```bash
+    outdir/
+   ├── array_fasta_all.csv
+   ├── prot_fasta_all.csv
+   ├── array_fasta_unique.csv
+   ├── array_fasta_filter_by_5_orf_unique.csv  # we need this file
+   ├── prot_fasta_filter_by_5_orf.csv   # we need this file
+```
+We need `array_fasta_filter_by_5_orf.csv` and `prot_fasta_filter_by_5_orf.csv` as input for the next step.
 
 ### Step 4: Co-Conservation Analysis Using `04_co-conservation_v4.py`
 
 **Description:**
 Performs co-conservation network analysis by integrating array and protein cluster graphs, filtering based on coverage and minimum cluster sizes, and identifying conserved protein sets.
 
+First, run `mmseqs` to get prot and array clusters. 
+
+```bash
+    mmseqs for protein, using --min-seq-id = 0.3
+    mmseqs easy-cluster --min-seq-id 0.3 --seq-id-mode 1 --cluster-mode 1 --cov-mode 1 --similarity-type 2 --single-step-clustering --dbtype 1 prot_fasta_filter_by_5_orf.csv 0.3_prot_out tmp
+   
+    mmseqs for array, using --min-seq-id = 0.35
+    mmseqs easy-cluster --min-seq-id 0.35 --seq-id-mode 1 --cluster-mode 1 --cov-mode 1 --similarity-type 2 --single-step-clustering --dbtype 2 array_fasta_unique.csv 0.35_array_out tmp
+                
+         mmseq_cluster/
+         ├── 0.3_prot_out_cluster.tsv  # we need this file
+         ├── 0.35_array_out_cluster.tsv  # we need this file
+         
+```
+
+Then, run `04_co-conservation_v4.py`
 **Key Parameters:**
 
 * `-a` / `--array_cluster`: TSV file for array clusters (edges). *(Required)*
@@ -170,6 +228,15 @@ python scripts/04_co-conservation_v4.py \
   -m 5 \
   -n 16 \
   -o /data/output/
+```
+**Output**: 
+```bash
+    output/
+ ├── v1_array_kept.csv
+ ├── v1_CLUSTER_INFO.txt
+ ├── v1_prot_cluster.graphml
+ ├── v1_prot_kept.csv  # This file contais proteins that are biologically assocoiated with array
+ ├── v1_prot_representative_nodes.txt
 ```
 
 ### Step 5: Protein Domain Co-Occurrence Analysis using `05_domain_co-occurrence_3.py`
@@ -200,6 +267,9 @@ python scripts/05_domain_co-occurrence_3.py \
   -p 0.02 \
   -m 20 \
   -o ./output_dir/
+  
+  python 05_domain_co-occurrence_3.py -i v1_prot_kept_hmmout.txt -f v1_prot_kept_fasta.fasta -r caspdb_and_caspedia_hmmout.txt -p 0 -m 5 -o ./1_domain_co-occurrence -a ./v1_prot_kept.csv
+
 ```
 
 ### Step 5 (Alternate): Undirected Protein Domain Co-Occurrence Analysis using `05_domain_co-occurrence_undirected.py`
@@ -308,10 +378,8 @@ If you use BioPrinCRISPR or any findings from our study, please cite our manuscr
 
 ```bibtex
 @article{YourLastName2025BioPrinCRISPR,
-  title={Systematic discovery across one million genomes reveals vast architectural and functional diversity of CRISPR-Cas systems},
-  author={Your Name, et al.},
-  journal={Journal Name},
-  year={2025},
+  title={A deep learning and co-conservation framework enable discovery of non-canonical Cas proteins},
+  author={B.B.H., C.Q.,Y.Y.F.,D.L.,F.W.,D.W.,Z.Y.,Y.Z.,H.X.L.,Y.Z.,Y.X.L. 
   volume={XX},
   pages={YY-ZZ}
 }
