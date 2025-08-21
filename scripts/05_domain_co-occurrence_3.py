@@ -185,9 +185,9 @@ def build_network(pfam_table, pfam_acc, protein_fasta, graph_path, minimal_edges
 
     # add edge attributes: status(known, or New), num_of_prot
     edge_attr = {}
-    missing = [pfam_id for pfam_id in edge if pfam_id not in pfam_acc_dict]
-    if missing:
-        print(f"Missing pfam_id annotations: {missing}")
+    # missing = [pfam_id for pfam_id in edge if pfam_id not in pfam_acc_dict]
+    # if missing:
+    #     print(f"Missing pfam_id annotations: {missing}")
     for pfam_pair, prot_id in pair2id.items():
         protein_seq_length = [len(protein_fasta_fict[prot_id]) for prot_id in prot_id]
         protein_seq_length.sort()
