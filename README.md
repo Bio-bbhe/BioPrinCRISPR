@@ -377,7 +377,7 @@ python scripts/15_rank_combinations.py \
 If you use BioPrinCRISPR or any findings from our study, please cite our manuscript:
 
 ```bibtex
-@article{YourLastName2025BioPrinCRISPR,
+@article{He2025BioPrinCRISPR,
   title={A deep learning and co-conservation framework enable discovery of non-canonical Cas proteins},
   author={B.B.H., C.Q.,Y.Y.F.,D.L.,F.W.,D.W.,Z.Y.,Y.Z.,H.X.L.,Y.Z.,Y.X.L. 
   volume={XX},
