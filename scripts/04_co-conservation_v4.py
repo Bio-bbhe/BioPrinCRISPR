@@ -13,8 +13,6 @@ def tsv2network(tsv_file, mini_node):
     df_net = pd.read_csv(tsv_file, sep='\t', header=None)
     cluster = list(zip(df_net.iloc[:, 0], df_net.iloc[:, 1]))
     print(f'found {len(cluster)} nodes/edges\n')
-    # cluster = [('CP012092.1__1835707_1835877', 'CP012092.1__1835707_1835877'),
-    # ('DLJL01000280.1__30125_30326', 'DLJL01000280.1__30125_30326')]
 
     G.add_edges_from(cluster)
     print(f'found {len(list(connected_components(G)))} clusters in {tsv_file}')
@@ -61,8 +59,6 @@ def process_df_chunk(chunk_info):  # chunk_infor = [chunk, coverage,array_net,pr
     df_chunk['cov'] = df_chunk.apply(
         lambda row: cal_coverage(row['intersection'], row['processed_prot_dict'], row['prot']), axis=1)
 
-    # with open('/home/hebeibei/Work/crispr/code/BioPrinCRISPR_pub_data/test_cov_list.txt', 'a') as f:
-    #     df_chunk['cov'].to_csv(f, sep='\t', header=False, index=False)
     # only get remaining prot ids
     df_remained = df_chunk[df_chunk['cov'] >= cov]
     keep_prot_ids = set().union(*df_remained['prot'])
@@ -149,27 +145,6 @@ if __name__ == '__main__':
     if not os.path.exists(outdir):
         os.makedirs(outdir)
 
-    # # input for testing
-    # prot_tsv = '/home/hebeibei/Work/crispr/code/tmp_test/0.3_prot.tsv_cluster.tsv'
-    # array_tsv = '/home/hebeibei/Work/crispr/code/tmp_test/0.5_repeat_cluster.tsv'
-    # # output for testing:
-    # outdir = '/home/hebeibei/Work/crispr/code/BioPrinCRISPR_pub_data/'
-    # coverage = 0
-    # mininode = 0  # 5 for < 10k proteins, otherwise 20
-    # num_cores = 64
-
-    # # input for working_meta
-    # prot_tsv = '/home/hebeibei/Data/minced_output/array_cds_pairs_meta/0.35_prot_cluster.tsv'
-    # array_tsv = '/home/hebeibei/Data/minced_output/array_cds_pairs_meta/0.5_array_cluster.tsv'
-    # # output for working:
-    # outdir = '/home/hebeibei/Data/minced_output/array_cds_pairs_meta'
-
-    # # input for working_NCBI
-    # prot_tsv = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi/0.35_prot_fasta_cluster.tsv'
-    # array_tsv = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi/0.5_array_cluster.tsv'
-    # # output for working:
-    # outdir = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi'
-
     df_prot_id = pd.read_csv(prot_tsv, sep='\t', header=None)
     all_prot = len(df_prot_id.iloc[:, 1].index)
     all_central_prot = set(df_prot_id.iloc[:, 0])
@@ -200,7 +175,6 @@ if __name__ == '__main__':
                 versions.append(int(match.group(1)))
 
         return max(versions) + 1 if versions else 1
-
 
     # Get version numbers for each output file
     prot_version = get_next_version(outdir, "prot_cluster", "graphml")
@@ -250,3 +224,4 @@ if __name__ == '__main__':
             f.write(f'{key}: {value}\n')
 
     print(f'Total finished in {round(time.time() - start, 2)} seconds\n')
+
