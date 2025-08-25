@@ -65,11 +65,6 @@ def get_sequences(column, prodigal_faa_path, window):
         elements_after = len(cds_start_end) - index_of_new_positions - 1
         elements_after = [i for i in range(elements_after + 1) if i > 0]
         elements_before.extend(elements_after)  # number of orf relative to array
-        # print(start,end)
-        # print(new_positions)
-        # print(cds_start_end)
-        # print(elements_before, elements_after)
-        # print(cds2rep_dist_abs)
 
         return repeat_sequence, sequence.seq[cds_start:cds_end], cds_masked, cds_list, cds2rep_dist_abs, elements_before,new_positions
 
@@ -129,26 +124,6 @@ if __name__ == '__main__':
     error_log_path = f'{args.outdir}/error_log.txt'
     paths = [faa_path, single_csv_faa, array2prot_pairs_path]
     ensure_paths(paths)
-    # ----------------------meta input and output---------------------------- #
-    # meta input
-    # # df_minced2fna = df_minced2fna.iloc[0:200]  # for testing
-    # meta input： build df_minced2fna if not prepared
-    # minced_out_path = '/home/hebeibei/Work/crispr/code/meer/miced_out/minced_out_path.txt'
-    # df_minced2fna = minced_to_fna(minced_out_path,'/home/hebeibei/Work/crispr/code/tmp_test')
-    # df_minced2fna = df_minced2fna.iloc[0:200]
-
-    # meta output dirs:
-
-    # # ----------------------NCBI input and output---------------------------- #
-    # # input
-    # window = 10000
-    # df_minced2fna = pd.read_csv('/home/hebeibei/Data/minced_output/ncbi_minced_to_fna.txt', sep='\t')
-    # # output
-    # faa_path = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi_10kb/prodigal_faa'
-    # single_csv_faa = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi_10kb/single_csv_and_faa'
-    # array2prot_pairs_path = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi_10kb/'
-    # paths = [faa_path, single_csv_faa, array2prot_pairs_path]
-    # ensure_paths(paths)
 
     batch_size = 10000
     with open(f'{array2prot_pairs_path}/array2prot_pairs.csv', 'w') as f, open(error_log_path, 'w') as error_log:
@@ -174,11 +149,6 @@ if __name__ == '__main__':
                             error_log.write(f"Error while saving data: {e}\n")
     f.close()
     error_log.close()
-
-    ## for testing
-    # df_minced_out = x(*df_minced2fna.iloc[10670], faa_path,array2prot_pairs_path)
-    # df_minced_out.to_csv(f, header=False, index=False)
-    # ['faa_file_name', 'repeat_region', 'cds_list']
-
     finish = time.perf_counter()
     print(f'finished in {round(finish - start, 3)} seconds')
+
