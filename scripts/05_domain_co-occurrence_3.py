@@ -252,43 +252,12 @@ if __name__ == '__main__':
                         help='<-m 0> Default=0, number of edges in a cluster')
     parser.add_argument('-o', '--outdir', type=str, required=True,
                         help='<-o ./output> A path to save output data. e.g., ./output')
+    parser.add_argument('--pfam_acc', type=str, required=True,
+                        help='Path to pfam accession to description mapping file, e.g., pfam_acc2des.txt')
+
     args = parser.parse_args()
 
-    # input constant:
-    # pfam_acc = '/home/hebeibei/Data/pfam/pfam_acc2des.txt'
-    # pfam_acc = '/media/Data/qichen/pfam_acc2des.txt'
-    #pfam_acc = '/media/Data/qichen/BioPrin/pfam_acc2des.txt'
-    pfam_acc = '/media/Data/qichen/pfam_acc2des.37.1.txt'
-    # # testing input if using pfamscan:
-    # pfam_table = '/home/hebeibei/Work/crispr/code/pfamscan_out2.txt'
-    # known_pfam_table = '/home/hebeibei/Work/crispr/code/pfamscan_out_known.txt'
-    # # or using hmm if using hmmsearch:
-    # hmm_table = '/home/hebeibei/Work/crispr/code/hmmsearch_domtblout.txt'
-    # known_hmm_table = '/home/hebeibei/Data/Database_cas_db/caspdb_and_caspedia_hmmout.txt'
-    # prot_fasta = '/home/hebeibei/Work/crispr/code/repeat_adj_prot.fasta'
-    # graph_path = '/home/hebeibei/Work/crispr/code/tmp_test/domain_filter_on_edge.graphml'
-
-    # # ----------------------NCBI input and output---------------------------- #
-    # hmm_table = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi/prot_fasta_hmmout.txt'
-    # prot_fasta = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi/prot_fasta_unique.csv'
-    # graph_path = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi/NCBI_domain_filter_edge_20_0.02_prot_kept_13597804_v4.graphml'
-    # # optional - NCBI
-    # known_hmm_table = '/home/hebeibei/Data/Database_cas_db/caspdb_and_caspedia_hmmout.txt'
-    # pfam_needed = '/home/hebeibei/Data/cas_db/cas_pedia_endo-_nuclease.txt'  # currently not used
-    # prot_ids_focus_on = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi/prot_kept_13597804_nodes_c_0.5_n_20_v4.csv'
-    # percent = 0.02
-    # minimal_edges = 20
-
-    # # ----------------------meta input and output---------------------------- #
-    # hmm_table = '/home/hebeibei/Work/crispr/code/meer/miced_out/meer_hmm_out.txt'
-    # prot_fasta = '/home/hebeibei/Work/crispr/code/meer/miced_out/prot_fasta.csv'
-    # graph_path = '/home/hebeibei/Work/crispr/code/meer/miced_out/meer.graphml'
-    # # optional - meta
-    # known_hmm_table = '/home/hebeibei/Data/Database_cas_db/caspdb_and_caspedia_hmmout.txt'
-    # pfam_needed = '/home/hebeibei/Data/cas_db/cas_pedia_endo-_nuclease.txt'  # currently not used
-    # prot_ids_focus_on = '/home/hebeibei/Work/crispr/code/meer/miced_out/kept_prot.txt'
-    # percent = 0
-    # minimal_edges = 0
+    pfam_acc = args.pfam_acc
     hmm_table = args.input
     prot_fasta = args.prot_fasta
     known_hmm_table = args.reference
