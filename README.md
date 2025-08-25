@@ -253,6 +253,7 @@ Constructs a directed domain-domain network from Pfam annotations, merging overl
   * `-r` / `--reference`: Reference domain annotation for Cas proteins.
   * `-a` / `--prot_id_focused`: File with protein IDs to restrict analysis.
   * `-p` / `--percent`: Minimum percentage threshold for edges (default 0).
+  * `--pfam_acc`: Path to pfam accession to description mapping file
   * `-m` / `--mini_edge_num`: Minimum edges count (default 0).
   * `-o` / `--outdir`: Output directory.
 
@@ -265,6 +266,7 @@ python scripts/05_domain_co-occurrence_3.py \
   -r ./reference_hmmout.txt \
   -a ./focused_protein_ids.txt \
   -p 0.02 \
+  --pfam_acc ./pfam_acc.txt \
   -m 20 \
   -o ./output_dir/
   
@@ -286,6 +288,7 @@ Builds an undirected domain co-occurrence graph capturing all pairwise domain as
   * `-r` / `--reference`: Reference domain annotation.
   * `-a` / `--prot_id_focused`: Protein ID list for focus.
   * `-p` / `--percent`: Minimum percentage threshold (default 0).
+  * `--pfam_acc`: Path to pfam accession to description mapping file
   * `-m` / `--mini_edge_num`: Minimal proteins per domain pair (default 0).
   * `-o` / `--outdir`: Output directory.
 
@@ -298,6 +301,7 @@ python scripts/05_domain_co-occurrence_undirected.py \
   -r ./reference_hmmout.txt \
   -a ./focused_protein_ids.txt \
   -p 0.02 \
+  --pfam_acc ./pfam_acc.txt \
   -m 20 \
   -o ./output_dir/
 ```
@@ -384,5 +388,6 @@ If you use BioPrinCRISPR or any findings from our study, please cite our manuscr
   pages={YY-ZZ}
 }
 ```
+
 
 
