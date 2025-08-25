@@ -314,7 +314,7 @@ def SVG(GenBankFile,output_file, ArrowHeight=20, HeadEdge=8, HeadLength=10, marg
 
 
 if __name__ == "__main__":
-    gbk_dir = '/home/hebeibei/Work/crispr/code/BioPrinCRISPR_pub_data/fig2_NCBI_data/Candidate_examples/Candidate'
+    gbk_dir = '/Your/Path/To/Candidate'
     gbk_dirs = [os.path.join(gbk_dir, f) for f in os.listdir(gbk_dir) if f.endswith('.gb')]
     for gbk_file in gbk_dirs:
         gbk2svg = f'{gbk_dir}/{gbk_file.split('/')[-1]}.svg'
@@ -326,4 +326,5 @@ if __name__ == "__main__":
     # svgs = ['./gbk_svg_5.svg','./gbk_svg_4.svg','./gbk_svg_3.svg']
     # output_pdf = 'gbk_merged.pdf'
     # save_svgs_to_pdf(svgs,output_pdf)
+
 
