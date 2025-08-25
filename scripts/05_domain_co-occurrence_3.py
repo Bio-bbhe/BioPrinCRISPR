@@ -38,10 +38,6 @@ def merge_domain(df):
 
 
 def parse_pfam(pfam_table, table_from, prot_ids_focus_on=None):
-    # pfam_scan.pl -fasta ./repeat_adj_prot.fasta -dir /home/hebeibei/Data/pfam -outfile ./pfamscan_out2.txt  -e_seq
-    # 0.01 -e_dom 0.01
-    # hmmsearch --domE 0.001 --domtblout /home/hebeibei/Work/crispr/code/hmmsearch_domtblout.txt
-    # /home/hebeibei/Data/pfam/Pfam-A.hmm /home/hebeibei/Work/crispr/code/repeat_adj_prot.fasta
     # if using pfam_scan.pl, N-C already sorted in the output, but it's not for hmmsearch need re-sort
     df_pfam = pd.DataFrame()
     if table_from == 'pfamscan':
