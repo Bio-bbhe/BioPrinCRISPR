@@ -79,21 +79,6 @@ if __name__ == '__main__':
     fasta_dir = args.outdir
     if not os.path.exists(fasta_dir):
         os.makedirs(fasta_dir)
-    # # ----------------------meta input and output---------------------------- #
-    # # input cvs file:
-    # pairs_file = '/home/hebeibei/Work/crispr/code/meer/miced_out/array2prot_pairs.csv'
-    # # pairs_file = '/home/hebeibei/Work/crispr/code/tmp_test/ap_pairs_for_fasta.txt'
-    # # output dir:
-    # fasta_dir = '/home/hebeibei/Work/crispr/code/meer/miced_out'
-    # # fasta_dir = '/home/hebeibei/Work/crispr/code/tmp_test'
-
-    # # ----------------------NCBI input and output---------------------------- #
-    # # input cvs file:
-    # pairs_file = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi_10kb/array2prot_pairs.csv'
-    # # pairs_file = '/home/hebeibei/Work/crispr/code/tmp_test/ap_pairs_for_fasta.txt'
-    # # output dir:
-    # fasta_dir = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi_10kb'
-    # # fasta_dir = '/home/hebeibei/Work/crispr/code/tmp_test'
 
     df_pairs_final = pairs_to_fasta(pairs_file,args.repeat_number,args.repeat_length)
 
@@ -135,10 +120,5 @@ if __name__ == '__main__':
 
     finish = time.perf_counter()
 
-    # # count duplicates
-    # df_2 = pd.read_csv(pairs_file, sep='\t')
-    # full_file = df_2['faa_file_name'].to_list()
-    # array_file = df_pairs_final['faa_file_name'].to_list()
-    # removed = set(full_file).difference(set(array_file))
-    # print(removed)
     print(f'finished in {round(finish - start, 3)} seconds')
+
