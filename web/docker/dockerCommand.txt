@@ -1,0 +1,11 @@
+docker network create app-network #创建自定义网络，确保容器互通
+
+docker build -t gunicorn-app:latest ./project
+#-p 5000:5000 不需要暴露端口，nginx会把http://172.19.196.58:8080/api的请求转发到http://gunicorn-app:5000/
+docker run -d --name gunicorn-app --network app-network -v /media/Data/hebeibei/minced_output/array_cds_pairs_ncbi_10kb/BioPrinCRISPR_WebData/PDB:/PDB -v /media/Data/hebeibei/minced_output/array_cds_pairs_ncbi_10kb/BioPrinCRISPR_WebData/svg:/svg -v /media/Data/hebeibei/minced_output/array_cds_pairs_ncbi_10kb/BioPrinCRISPR_WebData/gbk:/gbk gunicorn-app:latest
+
+#-p 27017:27017 不需要暴露端口，如果只提供给自身IP访问时，就不需要给容器暴露端口
+docker run -d --name mongo --network app-network -p 27017:27017 -v /media/Data/hebeibei/minced_output/array_cds_pairs_ncbi_10kb/BioPrinCRISPR_WebData/mongo_data:/data/db mongo:latest
+
+docker build -t vue-app:latest ./nginx
+docker run -d --name vue-app --network app-network -p 8080:8080 vue-app:latest
