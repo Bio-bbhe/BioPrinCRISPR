@@ -5,7 +5,7 @@ FROM nginx:latest
 RUN rm /etc/nginx/conf.d/default.conf 
 
 # 复制自定义Nginx配置到容器
-COPY nginx.conf /etc/nginx/conf.d/
+COPY nginx.conf /etc/nginx/nginx.conf 
 
 # 复制Vue静态资源到容器
 COPY dist/ /usr/share/nginx/html/ 
