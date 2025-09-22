@@ -548,7 +548,7 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped>
+<style>
 .sigma-container {
   position: relative;
   width: 100%;

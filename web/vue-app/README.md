@@ -1,4 +1,4 @@
-# graph-vis
+# app-vue
 
 ## Project setup
 ```
