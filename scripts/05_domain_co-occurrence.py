@@ -37,6 +37,10 @@ def merge_domain(df):
 
 
 def parse_pfam(pfam_table, table_from, prot_ids_focus_on=None):
+    # pfam_scan.pl -fasta ./repeat_adj_prot.fasta -dir /home/hebeibei/Data/pfam -outfile ./pfamscan_out2.txt  -e_seq
+    # 0.01 -e_dom 0.01
+    # hmmsearch --domE 0.001 --domtblout /home/hebeibei/Work/crispr/code/hmmsearch_domtblout.txt
+    # /home/hebeibei/Data/pfam/Pfam-A.hmm /home/hebeibei/Work/crispr/code/repeat_adj_prot.fasta
     # if using pfam_scan.pl, N-C already sorted in the output, but it's not for hmmsearch need re-sort
     df_pfam = pd.DataFrame()
     if table_from == 'pfamscan':
@@ -160,7 +164,7 @@ def build_network(pfam_table, pfam_acc, protein_fasta, graph_path, minimal_edges
             'presence_status': 'New' if pfam_id not in ref_pfam_node else 'Found',
             'present_in': '\n'.join(ref_pfam2id[pfam_id]) if pfam_id in ref_pfam_node else 'Na',
             'present_in_how_many_ref_Cas': len(ref_pfam2id[pfam_id]) if pfam_id in ref_pfam_node else 0,
-            'annotation': pfam_acc_dict[pfam_id] if pfam_id in pfam_acc_dict.keys() else None,
+            'annotation': pfam_acc_dict.get(pfam_id, 'Unknown'),
             'protein_seq_length': f'min: {seq_len_min}/max: {seq_len_max}/avg: {int(seq_len_avg)}/mid: {seq_len_mid}',
         }
 
@@ -192,7 +196,10 @@ def build_network(pfam_table, pfam_acc, protein_fasta, graph_path, minimal_edges
         if len(prot_id) >= minimal_edges and percentage >= percent:  # or include or pfam_atte
             edge_attr[edge] = {
                 'pfam_accession': ','.join(list(edge)),
-                'annotation': ','.join([pfam_acc_dict[pfam_id] if pfam_id in pfam_acc_dict.keys() else None for pfam_id in edge]),
+                # 'annotation': ','.join([pfam_acc_dict[pfam_id] if pfam_id in pfam_acc_dict.keys() else None for pfam_id in edge]),
+                # 'annotation': ','.join([pfam_acc_dict[pfam_id] for pfam_id in edge if pfam_id in pfam_acc_dict]),
+                'annotation': ','.join(
+                    [pfam_acc_dict[pfam_id] if pfam_id in pfam_acc_dict else 'Unknown' for pfam_id in edge]),
                 'name': f'C:{len(prot_id)}/P:{percentage}',
                 'protein_contain_this_domain_pair': '\n'.join(prot_id),
                 'number_of_proteins': len(prot_id),
@@ -238,13 +245,41 @@ if __name__ == '__main__':
                         help='<-m 0> Default=0, number of edges in a cluster')
     parser.add_argument('-o', '--outdir', type=str, required=True,
                         help='<-o ./output> A path to save output data. e.g., ./output')
-
-    parser.add_argument('--pfam_acc', type=str, required=True,
-                        help='Path to pfam accession to description mapping file, e.g., pfam_acc2des.txt')
-    
     args = parser.parse_args()
 
-    pfam_acc = args.pfam_acc
+    # input constant:
+    pfam_acc = '/home/hebeibei/Data/pfam/pfam_acc2des.txt'
+    # pfam_acc = '/home/hebeibei/Data/pfam/pfam_37.1/pfam_acc2des.txt'
+    # # testing input if using pfamscan:
+    # pfam_table = '/home/hebeibei/Work/crispr/code/pfamscan_out2.txt'
+    # known_pfam_table = '/home/hebeibei/Work/crispr/code/pfamscan_out_known.txt'
+    # # or using hmm if using hmmsearch:
+    # hmm_table = '/home/hebeibei/Work/crispr/code/hmmsearch_domtblout.txt'
+    # known_hmm_table = '/home/hebeibei/Data/Database_cas_db/caspdb_and_caspedia_hmmout.txt'
+    # prot_fasta = '/home/hebeibei/Work/crispr/code/repeat_adj_prot.fasta'
+    # graph_path = '/home/hebeibei/Work/crispr/code/tmp_test/domain_filter_on_edge.graphml'
+
+    # # ----------------------NCBI input and output---------------------------- #
+    # hmm_table = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi/prot_fasta_hmmout.txt'
+    # prot_fasta = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi/prot_fasta_unique.csv'
+    # graph_path = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi/NCBI_domain_filter_edge_20_0.02_prot_kept_13597804_v4.graphml'
+    # # optional - NCBI
+    # known_hmm_table = '/home/hebeibei/Data/Database_cas_db/caspdb_and_caspedia_hmmout.txt'
+    # pfam_needed = '/home/hebeibei/Data/cas_db/cas_pedia_endo-_nuclease.txt'  # currently not used
+    # prot_ids_focus_on = '/home/hebeibei/Data/minced_output/array_cds_pairs_ncbi/prot_kept_13597804_nodes_c_0.5_n_20_v4.csv'
+    # percent = 0.02
+    # minimal_edges = 20
+
+    # # ----------------------meta input and output---------------------------- #
+    # hmm_table = '/home/hebeibei/Work/crispr/code/meer/miced_out/meer_hmm_out.txt'
+    # prot_fasta = '/home/hebeibei/Work/crispr/code/meer/miced_out/prot_fasta.csv'
+    # graph_path = '/home/hebeibei/Work/crispr/code/meer/miced_out/meer.graphml'
+    # # optional - meta
+    # known_hmm_table = '/home/hebeibei/Data/Database_cas_db/caspdb_and_caspedia_hmmout.txt'
+    # pfam_needed = '/home/hebeibei/Data/cas_db/cas_pedia_endo-_nuclease.txt'  # currently not used
+    # prot_ids_focus_on = '/home/hebeibei/Work/crispr/code/meer/miced_out/kept_prot.txt'
+    # percent = 0
+    # minimal_edges = 0
     hmm_table = args.input
     prot_fasta = args.prot_fasta
     known_hmm_table = args.reference
@@ -266,4 +301,3 @@ if __name__ == '__main__':
                   )
     print(f'Total finished in {round(time.time() - start, 2)} seconds\n')
     # print(build_network(pfam_table))
-
