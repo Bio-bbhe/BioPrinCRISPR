@@ -32,9 +32,6 @@ bioprincrispr/
 │   ├── 10_ArrowerSVG_to_pdf.py
 │   ├── 15_rank_combinations.py
 │   ├── NetworkAnalysis.ipynb
-│   ├── analysis
-│   │   ├── plot_figure1.py
-│   │   └── plot_figure5.py
 │   └── embeddings
 │       ├── README
 │       ├── clustering_K-Means_OneStep.py
